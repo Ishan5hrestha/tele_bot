@@ -11,12 +11,12 @@ const web3 = new Web3(`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY
 const contractAddress = process.env.CONTRACT_ADDRESS;
 
 // Instantiate the contract
-function getContract() {
+export function getContract() {
     return new web3.eth.Contract(contract, contractAddress);
   }
   
   // Get the locked time for a wallet address
-async function getLockedTime(walletAddress) {
+export async function getLockedTime(walletAddress) {
     try {
       const contract = getContract();
       return await contract.methods.FedsComing(walletAddress).call();
@@ -26,7 +26,7 @@ async function getLockedTime(walletAddress) {
   }
   
   // Get the current timestamp
-  function getCurrentTime() {
+  export function getCurrentTime() {
     return Math.floor(Date.now() / 1000);
   }
   

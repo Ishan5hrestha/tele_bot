@@ -1,6 +1,6 @@
 const TelegramBot = require('node-telegram-bot-api');
 require("dotenv").config();  
-
+import * as contract from "../contract/contract.js";
 
 // Listen for /start command
 bot.onText(/\/start/, (msg) => {
@@ -26,8 +26,8 @@ bot.onText(/\/wen (.+)/, async (msg, match) => {
   const walletAddress = match[1];
 
   try {
-    const lockedTime = await getLockedTime(walletAddress);
-    const currentTime = getCurrentTime();
+    const lockedTime = await contract.getLockedTime(walletAddress);
+    const currentTime = contract.getCurrentTime();
 
     if (lockedTime > 0) {
       const remainingTime = lockedTime - currentTime;
