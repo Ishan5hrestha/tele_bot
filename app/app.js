@@ -1,21 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
-require("dotenv").config();
-const Web3 = require('web3');
-import contract from "../contract/contract.json"
+require("dotenv").config();  
 
-// replace the value below with the Telegram token you receive from @BotFather
-const token = process.env.TOKEN;
 
-// Create a bot instance
-const bot = new TelegramBot(token, { polling: true });
-const web3 = new Web3(`https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`);
-const contractAddress = process.env.CONTRACT_ADDRESS;
-
-// Instantiate the contract
-function getContract() {
-    return new web3.eth.Contract(contract, contractAddress);
-  }
-  
 // Listen for /start command
 bot.onText(/\/start/, (msg) => {
   const chatId = msg.chat.id;
@@ -34,3 +20,30 @@ bot.onText(/\/keyboard/, (msg) => {
         }
     });
  });
+ // Handle the /wen command
+bot.onText(/\/wen (.+)/, async (msg, match) => {
+  const chatId = msg.chat.id;
+  const walletAddress = match[1];
+
+  try {
+    const lockedTime = await getLockedTime(walletAddress);
+    const currentTime = getCurrentTime();
+
+    if (lockedTime > 0) {
+      const remainingTime = lockedTime - currentTime;
+      const remainingHours = Math.floor(remainingTime / 3600);
+      const remainingMinutes = Math.floor((remainingTime % 3600) / 60);
+      const remainingSeconds = remainingTime % 60;
+
+      bot.sendMessage(
+        chatId,
+        `Wallet ${walletAddress} will be locked for ${remainingHours} hours, ${remainingMinutes} minutes, and ${remainingSeconds} seconds.`
+      );
+    } else {
+      bot.sendMessage(chatId, `Wallet ${walletAddress} is not subject to locking.`);
+    }
+  } catch (error) {
+    bot.sendMessage(chatId, 'An error occurred while fetching the locking information.');
+    console.error(error);
+  }
+});
