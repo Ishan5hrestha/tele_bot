@@ -10,9 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.1.4",
+    "ethers": "^6.5.1",
     "express": "^4.18.2",
     "mongoose": "^7.2.2",
     "package.json": "^2.0.1",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "web3": "^4.0.1",
+    "web3-eth-contract": "^4.0.1"
   }
 }
