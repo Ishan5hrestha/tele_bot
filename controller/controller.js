@@ -1,3 +1,5 @@
+const { TokenInfo } = require("./models");
+
 /*
 /// Steps reqired for controller:
 /// check for the wallet balance 
@@ -8,8 +10,21 @@
 /// 
 */
 
+const checkAndUpdateBalance = (wallet) => {};
+
 /*
 /// wen/ ??? 
 /// read the wallet with nearest death time, 
 /// 
 */
+
+const checkNearestDeathWallet = async (wallet) => {
+  //call smart contract and check
+
+  const walletsInfo = await TokenInfo.findAll({});
+};
+
+modules.exports = {
+  checkAndUpdateBalance,
+  checkNearestDeathWallet,
+};
