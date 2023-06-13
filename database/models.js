@@ -1,12 +1,16 @@
-// const { getAddress } = require("ethers/lib/utils");
+const { getAddress } = require("ethers");
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const TransLogSchema = new Schema({
-  fromWallet: { type: String }, //, get: getAddress, set: getAddress},
-  toWallet: { type: String }, //, get: getAddress, set: getAddress },
+  wallet: {
+    type: String,
+    get: getAddress,
+    set: getAddress,
+  },
   deadTimestamp: Number,
-  balance: Number,
+  balance: String,
+  dead: { type: Boolean, default: false },
 });
 
 const TokenInfoSchema = new Schema({
@@ -18,7 +22,7 @@ const TokenInfoSchema = new Schema({
 const TokenInfo = mongoose.model("TokenInfo", TokenInfoSchema);
 const TokenLogs = mongoose.model("TokenLogs", TransLogSchema);
 
-modules.exports = {
+module.exports = {
   TokenInfo,
   TokenLogs,
 };
