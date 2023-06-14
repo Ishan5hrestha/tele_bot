@@ -41,6 +41,7 @@ bot.onText(/\/wen (.+)/, async (msg, match) => {
 
   try {
     const tokenInfo = await TokenLogs.findOne({ wallet: walletAddress });
+    console.log(tokenInfo);
 
     if (tokenInfo) {
       const lockedTime = tokenInfo.deadTimestamp;
@@ -48,7 +49,7 @@ bot.onText(/\/wen (.+)/, async (msg, match) => {
       const remainingHours = Math.floor(remainingTime / 3600);
       const remainingMinutes = Math.floor((remainingTime % 3600) / 60);
       const remainingSeconds = remainingTime % 60;
-
+      debugger;
       bot.sendMessage(
         chatId,
         `Wallet ${walletAddress} will be locked for ${remainingHours} hours, ${remainingMinutes} minutes, and ${remainingSeconds} seconds.`

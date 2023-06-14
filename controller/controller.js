@@ -5,7 +5,7 @@ const {
   getEthersProvider,
   getLockedTime,
 } = require("../contract/contract");
-const { TokenLogs } = require("./models");
+const { TokenLogs } = require("../database/models");
 
 /*
 /// Steps required for controller:

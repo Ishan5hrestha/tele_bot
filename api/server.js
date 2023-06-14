@@ -7,7 +7,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-const port = 3000;
+const port = 3001;
 
 app.listen(port, () => {
   console.log("Listen on port " + port);
@@ -15,10 +15,17 @@ app.listen(port, () => {
 
 const callRouter = async (req, res) => {
   console.log("req", req);
-  console.log("res", res.body);
+  console.log("res", res.body.body);
 
   const from = res.body.from;
   const to = res.body.to;
+  const status = res.body.status;
+
+  if (status == "pending") {
+    console.log("pending txn");
+    res.json({ success: "thank u!" });
+    return;
+  }
 
   const untrackedWallets = getUntrackedWallets();
   if (!untrackedWallets.includes(from)) {
