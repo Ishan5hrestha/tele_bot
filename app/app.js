@@ -95,3 +95,25 @@ bot.onText(/\/wen (.+)/, async (msg, match) => {
     console.error(error);
   }
 });
+
+// Handle /image command
+bot.onText(/\/image/, (msg) => {
+  const chatId = msg.chat.id;
+  const imagePath = "path/to/your/image.jpg";
+
+  fs.readFile(imagePath, (error, photo) => {
+    if (error) {
+      console.error("Error reading image file:", error);
+      return;
+    }
+
+    bot
+      .sendPhoto(chatId, photo, { caption: "Hello! This is an image." })
+      .then(() => {
+        console.log("Image sent");
+      })
+      .catch((error) => {
+        console.error("Error sending image:", error);
+      });
+  });
+});

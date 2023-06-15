@@ -1,5 +1,6 @@
 const express = require("express");
 const { checkAndUpdateBalance } = require("../controller/controller");
+const { getUntrackedWallets } = require("../config");
 
 const app = express();
 
@@ -15,11 +16,11 @@ app.listen(port, () => {
 
 const callRouter = async (req, res) => {
   console.log("req", req);
-  console.log("res", res.body.body);
+  console.log("res", req.body);
 
-  const from = res.body.from;
-  const to = res.body.to;
-  const status = res.body.status;
+  const from = req.body.from;
+  const to = req.body.to;
+  const status = req.body.status;
 
   if (status == "pending") {
     console.log("pending txn");

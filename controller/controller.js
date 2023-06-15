@@ -5,8 +5,9 @@ const {
   getEthersProvider,
   getLockedTime,
 } = require("../contract/contract");
+const connectDB = require("../database/connection");
 const { TokenLogs } = require("../database/models");
-
+connectDB();
 /*
 /// Steps required for controller:
 /// check for the wallet balance 
@@ -22,11 +23,16 @@ const checkAndUpdateBalance = async (wallet) => {
   let balance = await getBalanceOf(contract, wallet);
 
   if (balance == 0) {
-    let deleteTokenInfo = await TokenLogs.findOne({
+    //delete the wallet that exist at past but doesn't have the balance now
+    let deleteTokenInfo = await TokenLogs.find({
       wallet: wallet,
     });
-
-    console.log("deleted token info", deleteTokenInfo);
+    if (deleteTokenInfo.length != 0) {
+      deleteTokenInfo = await TokenLogs.findOneAndDelete({
+        wallet: wallet,
+      });
+      console.log("deleted token info", deleteTokenInfo);
+    }
   } else {
     try {
       let updatedTokenInfo = await TokenLogs.findOneAndUpdate(
@@ -36,7 +42,7 @@ const checkAndUpdateBalance = async (wallet) => {
         {
           balance: balance,
         }
-      );
+      ).exec();
       console.log("updated token info", updatedTokenInfo);
     } catch (err) {
       //no tokens so create new
